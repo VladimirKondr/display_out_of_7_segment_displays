@@ -1,9 +1,7 @@
-import pygame
-class SevenSegmentDisplay:
-    def __init__(self, surface, x=0, y=0, segment_width=10, segment_length=50):
-        # Константы
-        self.SEGMENT_WIDTH = segment_width
-        self.SEGMENT_LENGTH = segment_length
+from ConfigData import ConfigData
+class SevenSegmentDisplay(ConfigData):
+    def __init__(self, surface, x=0, y=0):
+        super().__init__()
         self.dic = {0: "abcdef",
                     1: "bc",
                     2: "abged",
@@ -26,13 +24,13 @@ class SevenSegmentDisplay:
                       [x, y + self.SEGMENT_WIDTH + self.SEGMENT_LENGTH + self.SEGMENT_WIDTH + self.SEGMENT_LENGTH, self.SEGMENT_LENGTH, self.SEGMENT_WIDTH],
                       [x + self.SEGMENT_LENGTH - self.SEGMENT_WIDTH, y + self.SEGMENT_WIDTH, self.SEGMENT_WIDTH, self.SEGMENT_LENGTH],
                       [x + self.SEGMENT_LENGTH - self.SEGMENT_WIDTH, y + self.SEGMENT_WIDTH + self.SEGMENT_LENGTH + self.SEGMENT_WIDTH, self.SEGMENT_WIDTH, self.SEGMENT_LENGTH]]
-        self.recs = {n[i]: pygame.rect.Rect(*rect_props[i]) for i in range(7)}
+        self.recs = {n[i]: self.pygame.rect.Rect(*rect_props[i]) for i in range(7)}
 
     def draw_segment(self, i):
-        pygame.draw.rect(self.surface, color=(255, 0, 0), rect=self.recs[i])
+        self.pygame.draw.rect(self.surface, color=(255, 0, 0), rect=self.recs[i])
 
     def undraw_segment(self, i):
-        pygame.draw.rect(self.surface, color=(0, 0, 0), rect=self.recs[i])
+        self.pygame.draw.rect(self.surface, color=(0, 0, 0), rect=self.recs[i])
 
     def clear(self):
         # self.surface.fill((0, 0, 0))
