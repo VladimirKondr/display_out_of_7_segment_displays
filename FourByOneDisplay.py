@@ -1,19 +1,23 @@
-
+import pygame
 from SevenSegmentDisplay import SevenSegmentDisplay
 
 
 class FourByOneDisplay:
-    def __init__(self, surface, x = 0, y = 0, segment_width=10, segment_length=50, otstup=20):
+    def __init__(self, surface, x = 0, y = 0, segment_width=10, segment_length=50, indent=20):
         # Константы
         self.SEGMENT_WIDTH = segment_width
         self.SEGMENT_LENGTH = segment_length
 
         self.surface = surface
         self.coords = (x, y)
-        self.otstup = otstup
-        self.width = 4 * segment_length + 3 * otstup
+        self.indent = indent
+        self.width = 4 * segment_length + 3 * indent
         self.length = 2 * segment_length + 3 * segment_width
-        self.displays: tuple[SevenSegmentDisplay] = tuple(SevenSegmentDisplay(surface, x + (segment_length + otstup) * i, y, segment_width, segment_length) for i in range(4))
+        self.displays = tuple(SevenSegmentDisplay(surface,
+                                                  x + (segment_length + indent) * i,
+                                                  y,
+                                                  segment_width,
+                                                  segment_length) for i in range(4))
         self.number = 0
         for unit in self.displays:
             unit.update_number(0)
@@ -41,15 +45,12 @@ if __name__ == "__main__":
     import sys
 
     pygame.init()
-    # Настройка окна
     WIDTH, HEIGHT = 500, 200
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("4by1")
 
-    # Создание дисплея
     display = FourByOneDisplay(screen)
 
-    # Главный цикл
     number = 0
     while True:
         for event in pygame.event.get():
@@ -61,4 +62,4 @@ if __name__ == "__main__":
         pygame.display.flip()
 
         number = (number + 1) % 10_000
-        pygame.time.delay(100)  # Задержка 1 секунда
+        pygame.time.delay(1)
