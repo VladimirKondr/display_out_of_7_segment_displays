@@ -1,23 +1,17 @@
-import pygame
+from ConfigData import ConfigData
 from SevenSegmentDisplay import SevenSegmentDisplay
 
 
-class FourByOneDisplay:
-    def __init__(self, surface, x = 0, y = 0, segment_width=10, segment_length=50, indent=20):
-        # Константы
-        self.SEGMENT_WIDTH = segment_width
-        self.SEGMENT_LENGTH = segment_length
-
+class FourByOneDisplay(ConfigData):
+    def __init__(self, surface, x=0, y=0):
+        super().__init__()
         self.surface = surface
         self.coords = (x, y)
-        self.indent = indent
-        self.width = 4 * segment_length + 3 * indent
-        self.length = 2 * segment_length + 3 * segment_width
+        self.width = 4 * self.SEGMENT_LENGTH + 3 * self.INNER_INDENT
+        self.length = 2 * self.SEGMENT_LENGTH + 3 * self.SEGMENT_WIDTH
         self.displays = tuple(SevenSegmentDisplay(surface,
-                                                  x + (segment_length + indent) * i,
-                                                  y,
-                                                  segment_width,
-                                                  segment_length) for i in range(4))
+                                                  x + (self.SEGMENT_LENGTH + self.INNER_INDENT) * i,
+                                                  y) for i in range(4))
         self.number = 0
         for unit in self.displays:
             unit.update_number(0)
