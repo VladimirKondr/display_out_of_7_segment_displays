@@ -11,9 +11,6 @@ class FourByOneDisplay(ConfigData):
                                                   x + (self.SEGMENT_LENGTH + self.INNER_INDENT) * i,
                                                   y) for i in range(4))
         self.number = 0
-        for unit in self.displays:
-            unit.update_number(0)
-            unit.draw_number()
 
     def clear(self):
         for unit in self.displays:
@@ -49,7 +46,7 @@ if __name__ == "__main__":
                 pygame.quit()
                 sys.exit()
 
-        display.update_number(number)
+        #display.update_number(number)
         pygame.display.flip()
 
         number = (number + 1) % 10_000

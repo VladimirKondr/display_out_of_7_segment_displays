@@ -26,27 +26,27 @@ class SevenSegmentDisplay(ConfigData):
                       [x + self.SEGMENT_LENGTH - self.SEGMENT_WIDTH, y + self.SEGMENT_WIDTH + self.SEGMENT_LENGTH + self.SEGMENT_WIDTH, self.SEGMENT_WIDTH, self.SEGMENT_LENGTH]]
         self.recs = {n[i]: self.pygame.rect.Rect(*rect_props[i]) for i in range(7)}
 
-    def draw_segment(self, i):
-        self.pygame.draw.rect(self.surface, color=(255, 0, 0), rect=self.recs[i])
+    def draw_segment(self, i, lum = 1):
+        if not self.segments[i]:
+            self.pygame.draw.rect(self.surface, color=(255 / (1 - lum) if lum != 1 else 255, 0, 0), rect=self.recs[i])
+            self.segments[i] = True
 
     def undraw_segment(self, i):
-        self.pygame.draw.rect(self.surface, color=(0, 0, 0), rect=self.recs[i])
+        if self.segments[i]:
+            self.pygame.draw.rect(self.surface, color=(0, 0, 0), rect=self.recs[i])
+            self.segments[i] = False
 
     def clear(self):
         # self.surface.fill((0, 0, 0))
-        for i, is_on in self.segments.items():
-            if is_on:
-                self.segments[i] = False
-                self.undraw_segment(i)
+        for i in self.segments:
+            self.undraw_segment(i)
 
     def draw_number(self):
         n = self.dic[self.number]
-        for i, is_on in self.segments.items():
-            if i in n and not is_on:
-                self.segments[i] = True
+        for i in self.segments:
+            if i in n:
                 self.draw_segment(i)
-            elif i not in n and is_on:
-                self.segments[i] = False
+            elif i not in n:
                 self.undraw_segment(i)
 
     def update_number(self, number):
@@ -76,8 +76,8 @@ if __name__ == "__main__":
                 pygame.quit()
                 sys.exit()
 
-        display.update_number(number)
+        #display.update_number(number)
         pygame.display.flip()
 
-        number = (number + 1) % 10  # Переключение между числами 0-9
+        number = (number + 1) % 10
         pygame.time.delay(1000)  # Задержка 1 секунда

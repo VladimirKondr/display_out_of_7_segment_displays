@@ -1,12 +1,13 @@
 class ConfigData:
-    def __init__(self, segment_length=25 / 5, segment_width=5 / 5, inner_indent = 10 / 5, outer_indent = 10 / 5, width = 512, height = 128):
+    def __init__(self, segment_length=25, segment_width=5, inner_indent = 15, outer_indent = 15, coef = 5, width = 128, height = 32):
         assert width % 4 == 0
         import pygame
         self.pygame = pygame
-        self.SEGMENT_WIDTH = segment_width
-        self.SEGMENT_LENGTH = segment_length
-        self.INNER_INDENT = inner_indent
-        self.OUTER_INDENT = outer_indent
+        self.COEF = coef
+        self.SEGMENT_WIDTH = segment_width / self.COEF
+        self.SEGMENT_LENGTH = segment_length / self.COEF
+        self.INNER_INDENT = inner_indent / self.COEF
+        self.OUTER_INDENT = outer_indent /  self.COEF
         self.WIDTH = width
         self.HEIGHT = height
         self.calculate()
