@@ -7,8 +7,6 @@ class FourByOneDisplay(ConfigData):
         super().__init__()
         self.surface = surface
         self.coords = (x, y)
-        self.width = 4 * self.SEGMENT_LENGTH + 3 * self.INNER_INDENT
-        self.length = 2 * self.SEGMENT_LENGTH + 3 * self.SEGMENT_WIDTH
         self.displays = tuple(SevenSegmentDisplay(surface,
                                                   x + (self.SEGMENT_LENGTH + self.INNER_INDENT) * i,
                                                   y) for i in range(4))
@@ -23,16 +21,15 @@ class FourByOneDisplay(ConfigData):
 
     def draw_number(self):
         x = str(self.number)
-        x = "0" * (4 - len(x)) + x
-        for i in range(3, -1, -1):
-            f = int(x[i])
+        for i in range(4):
+            f = int(x[i - 4 + len(x)]) if i > (4 - len(x) - 1) else 0
             if self.displays[i].number != f:
                 self.displays[i].update_number(f)
-                self.displays[i].draw_number()
 
     def update_number(self, number):
         self.number = number
         self.draw_number()
+
 
 if __name__ == "__main__":
     import pygame
@@ -56,4 +53,4 @@ if __name__ == "__main__":
         pygame.display.flip()
 
         number = (number + 1) % 10_000
-        pygame.time.delay(1)
+        pygame.time.delay(100)
