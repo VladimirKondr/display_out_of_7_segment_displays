@@ -18,7 +18,7 @@ class Display(ConfigData):
         if self.digits > 640:
             sys.set_int_max_str_digits(self.digits)
         self.resolution = (len(self.displays[0]) * 4 * 4, len(self.displays) * 6)
-        self.live = {(1, 0): "a", (0, 1): "f", (2, 1): "b", (1, 2): "g", (0, 3): "e", (2, 3): "c", (1, 4): "d"}
+        self.live = {(0, 1): "a", (1, 0): "f", (1, 2): "b", (2, 1): "g", (3, 0): "e", (3, 2): "c", (4, 1): "d"}
 
     def get_pos(self, i, j):
         row = i // 6
@@ -26,7 +26,7 @@ class Display(ConfigData):
         pad = j // 16
         digit = (j - 16 * pad) // 4
         rel_j = j - 16 * pad - 4 * digit
-        return row, pad, digit, self.live[(rel_j, rel_i)]
+        return row, pad, digit, self.live[(rel_i, rel_j)]
 
     def call_digit(self, n):
         if n >= self.digits:
@@ -83,13 +83,10 @@ class Display(ConfigData):
         return i, j
 
     def load_image(self, img: np.array):
-        i, j = 1, 0
+        i, j = 0, 1
         while i < self.resolution[1] and j < self.resolution[0]:
             n = self.get_pos(i, j)
-            if img[i, j] < 100:
-                self.displays[n[0]][n[1]].displays[n[2]].draw_segment(n[3])
-            else:
-                self.displays[n[0]][n[1]].displays[n[2]].undraw_segment(n[3])
+            self.displays[n[0]][n[1]].displays[n[2]].draw_segment(i = n[3], lum = 255 - img[i, j])
             i, j = self.next_live_pixel(i, j)
 
     def load_video(self, video_path):
@@ -110,25 +107,25 @@ if __name__ == "__main__":
     import random
 
     pygame.init()
-    WIDTH, HEIGHT = 500, 700
+    WIDTH, HEIGHT = 1800, 900
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("full")
 
     display = Display(screen)
-    display.update_number(display.MAX_NUMBER)
-    display.load_image_path("img_3.png")
+    #display.load_image_path("img_2.png")
     x = time.time()
-    #frames = display.load_video("rick.mp4")
+    frames = display.load_video("rick.mp4")
     print(time.time() - x)
     #display.update_number(int("8" * display.digits))
     i = 0
     while True:
+        display.clear()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
         #number = random.randint(1, display.MAX_NUMBER)
-        #display.load_image(img=frames[i % len(frames)])
+        display.load_image(img=frames[i % len(frames)])
         #display.update_number(number)
         #display.call_digit(59).update_number(1)
         pygame.display.flip()

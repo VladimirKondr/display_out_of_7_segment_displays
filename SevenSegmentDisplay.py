@@ -33,9 +33,9 @@ class SevenSegmentDisplay(ConfigData):
                        self.SEGMENT_LENGTH])
         self.recs = {n[i]: self.pygame.rect.Rect(*rect_props[i]) for i in range(7)}
 
-    def draw_segment(self, i, lum=1):
+    def draw_segment(self, i, lum=255):
         if not self.segments[i]:
-            self.pygame.draw.rect(self.surface, color=(255 / (1 - lum) if lum != 1 else 255, 0, 0), rect=self.recs[i])
+            self.pygame.draw.rect(self.surface, color=(lum, 0, 0), rect=self.recs[i])
             self.segments[i] = True
 
     def undraw_segment(self, i):

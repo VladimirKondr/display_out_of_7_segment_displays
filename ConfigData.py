@@ -1,5 +1,5 @@
 class ConfigData:
-    def __init__(self, segment_length=25, segment_width=5, inner_indent = 15, outer_indent = 15, coef = 3, width = 12, height = 17):
+    def __init__(self, segment_length=25, segment_width=5, inner_indent = 15, outer_indent = 15, coef = 1, width = 32, height = 10):
         assert width % 4 == 0
         import pygame
         self.pygame = pygame
