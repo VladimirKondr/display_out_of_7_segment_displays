@@ -58,14 +58,7 @@ class Display(ConfigData):
         img = Image.open(path).convert("L").resize(self.resolution)
         img.save("BWimg.png")
         img = np.array(img)
-        i, j = 1, 0
-        while i < self.resolution[1] and j < self.resolution[0]:
-            n = self.get_pos(i, j)
-            if img[i, j] < 100:
-                self.displays[n[0]][n[1]].displays[n[2]].draw_segment(n[3])
-            else:
-                self.displays[n[0]][n[1]].displays[n[2]].undraw_segment(n[3])
-            i, j = self.next_live_pixel(i, j)
+        self.load_image(img)
 
     def next_live_pixel(self, i, j):
         x = i % 6
@@ -117,15 +110,15 @@ if __name__ == "__main__":
     import random
 
     pygame.init()
-    WIDTH, HEIGHT = 1920, 1080
+    WIDTH, HEIGHT = 500, 700
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("full")
 
     display = Display(screen)
     display.update_number(display.MAX_NUMBER)
-    display.load_image_path("img_2.png")
+    display.load_image_path("img_3.png")
     x = time.time()
-    frames = display.load_video("rick.mp4")
+    #frames = display.load_video("rick.mp4")
     print(time.time() - x)
     #display.update_number(int("8" * display.digits))
     i = 0
@@ -135,7 +128,7 @@ if __name__ == "__main__":
                 pygame.quit()
                 sys.exit()
         #number = random.randint(1, display.MAX_NUMBER)
-        display.load_image(img=frames[i % len(frames)])
+        #display.load_image(img=frames[i % len(frames)])
         #display.update_number(number)
         #display.call_digit(59).update_number(1)
         pygame.display.flip()

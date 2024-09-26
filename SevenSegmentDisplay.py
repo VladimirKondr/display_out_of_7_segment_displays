@@ -1,4 +1,6 @@
 from ConfigData import ConfigData
+
+
 class SevenSegmentDisplay(ConfigData):
     def __init__(self, surface, x=0, y=0):
         super().__init__()
@@ -17,16 +19,21 @@ class SevenSegmentDisplay(ConfigData):
         self.surface = surface
         self.number = 0
         n = "afgedbc"
-        rect_props = [[x, y, self.SEGMENT_LENGTH, self.SEGMENT_WIDTH],
+        rect_props = ([x, y, self.SEGMENT_LENGTH, self.SEGMENT_WIDTH],
                       [x, y + self.SEGMENT_WIDTH, self.SEGMENT_WIDTH, self.SEGMENT_LENGTH],
                       [x, y + self.SEGMENT_WIDTH + self.SEGMENT_LENGTH, self.SEGMENT_LENGTH, self.SEGMENT_WIDTH],
-                      [x, y + self.SEGMENT_WIDTH + self.SEGMENT_LENGTH + self.SEGMENT_WIDTH, self.SEGMENT_WIDTH, self.SEGMENT_LENGTH],
-                      [x, y + self.SEGMENT_WIDTH + self.SEGMENT_LENGTH + self.SEGMENT_WIDTH + self.SEGMENT_LENGTH, self.SEGMENT_LENGTH, self.SEGMENT_WIDTH],
-                      [x + self.SEGMENT_LENGTH - self.SEGMENT_WIDTH, y + self.SEGMENT_WIDTH, self.SEGMENT_WIDTH, self.SEGMENT_LENGTH],
-                      [x + self.SEGMENT_LENGTH - self.SEGMENT_WIDTH, y + self.SEGMENT_WIDTH + self.SEGMENT_LENGTH + self.SEGMENT_WIDTH, self.SEGMENT_WIDTH, self.SEGMENT_LENGTH]]
+                      [x, y + self.SEGMENT_WIDTH + self.SEGMENT_LENGTH + self.SEGMENT_WIDTH, self.SEGMENT_WIDTH,
+                       self.SEGMENT_LENGTH],
+                      [x, y + self.SEGMENT_WIDTH + self.SEGMENT_LENGTH + self.SEGMENT_WIDTH + self.SEGMENT_LENGTH,
+                       self.SEGMENT_LENGTH, self.SEGMENT_WIDTH],
+                      [x + self.SEGMENT_LENGTH - self.SEGMENT_WIDTH, y + self.SEGMENT_WIDTH, self.SEGMENT_WIDTH,
+                       self.SEGMENT_LENGTH],
+                      [x + self.SEGMENT_LENGTH - self.SEGMENT_WIDTH,
+                       y + self.SEGMENT_WIDTH + self.SEGMENT_LENGTH + self.SEGMENT_WIDTH, self.SEGMENT_WIDTH,
+                       self.SEGMENT_LENGTH])
         self.recs = {n[i]: self.pygame.rect.Rect(*rect_props[i]) for i in range(7)}
 
-    def draw_segment(self, i, lum = 1):
+    def draw_segment(self, i, lum=1):
         if not self.segments[i]:
             self.pygame.draw.rect(self.surface, color=(255 / (1 - lum) if lum != 1 else 255, 0, 0), rect=self.recs[i])
             self.segments[i] = True
