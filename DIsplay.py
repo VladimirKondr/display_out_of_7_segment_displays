@@ -19,6 +19,7 @@ class Display(ConfigData):
             sys.set_int_max_str_digits(self.digits)
         self.resolution = (len(self.displays[0]) * 4 * 4, len(self.displays) * 6)
         self.live = {(0, 1): "a", (1, 0): "f", (1, 2): "b", (2, 1): "g", (3, 0): "e", (3, 2): "c", (4, 1): "d"}
+        self.FACTOR_15 = 255 / 15
 
     def get_pos(self, i, j):
         row = i // 6
@@ -86,7 +87,7 @@ class Display(ConfigData):
         i, j = 0, 1
         while i < self.resolution[1] and j < self.resolution[0]:
             n = self.get_pos(i, j)
-            self.displays[n[0]][n[1]].displays[n[2]].draw_segment(i = n[3], lum = 255 - img[i, j])
+            self.displays[n[0]][n[1]].displays[n[2]].draw_segment(i = n[3], lum = int((255 - img[i, j]) / self.FACTOR_15) * self.FACTOR_15)
             i, j = self.next_live_pixel(i, j)
 
     def load_video(self, video_path):
